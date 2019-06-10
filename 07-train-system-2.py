@@ -1,0 +1,151 @@
+import pickle
+import numpy as np
+import pandas as pd
+
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from torch.utils.data import DataLoader
+
+from albumentations import Compose, ShiftScaleRotate, GridDistortion
+from albumentations.pytorch import ToTensor
+
+from utils import AudioDataset, Task5Model
+
+
+# Load and prepare data
+with open('./data/metadata.pkl', 'rb') as f:
+    metadata = pickle.load(f)
+
+train_df = pd.read_pickle('./data/train_scaled.pkl')
+valid_df = pd.read_pickle('./data/valid_scaled.pkl')
+
+train_X = np.concatenate([
+        np.expand_dims(np.load('./data/logmelspec/{}.npy'.format(x)).T[:635, :], axis=0)
+        for x in train_df.index.tolist()])
+valid_X = np.concatenate([
+        np.expand_dims(np.load('./data/logmelspec/{}.npy'.format(x)).T[:635, :], axis=0)
+        for x in valid_df.index.tolist()])
+
+train_X = np.expand_dims(train_X, axis=1)
+valid_X = np.expand_dims(valid_X, axis=1)
+
+train_y = train_df.values
+valid_y = valid_df.values
+
+train_y_mask = np.ones_like(train_y)
+valid_y_mask = np.ones_like(valid_y)
+
+# Channel wise normalization
+channel_means = train_X.reshape(-1, 128).mean(axis=0).reshape(1, 1, 1, -1)
+channel_stds = train_X.reshape(-1, 128).std(axis=0).reshape(1, 1, 1, -1)
+train_X = (train_X - channel_means) / channel_stds
+valid_X = (valid_X - channel_means) / channel_stds
+np.save('data/channel_means.npy', channel_means)
+np.save('data/channel_stds.npy', channel_stds)
+
+# Define the data augmentation transformations
+albumentations_transform = Compose([
+    ShiftScaleRotate(shift_limit=0.1, scale_limit=0.1, rotate_limit=0.5),
+    GridDistortion(),
+    ToTensor()
+])
+
+# Create the datasets and the dataloaders
+train_dataset = AudioDataset(torch.Tensor(train_X),
+                             torch.Tensor(train_y),
+                             torch.Tensor(train_y_mask),
+                             albumentations_transform)
+valid_dataset = AudioDataset(torch.Tensor(valid_X),
+                             torch.Tensor(valid_y),
+                             torch.Tensor(valid_y_mask),
+                             None)
+
+val_loader = DataLoader(valid_dataset, 64, shuffle=False)
+train_loader_1 = DataLoader(train_dataset, 64, shuffle=True)
+train_loader_2 = DataLoader(train_dataset, 64, shuffle=True)
+
+# Define the device to be used
+cuda = True
+device = torch.device('cuda:0' if cuda else 'cpu')
+print('Device: ', device)
+
+# Instantiate the model
+model = Task5Model(37).to(device)
+print(model)
+
+# Define optimizer, scheduler and loss criteria
+optimizer = optim.Adam(model.parameters(), lr=0.0005, amsgrad=True)
+scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, patience=5, verbose=True)
+criterion = nn.BCEWithLogitsLoss(reduction='none')
+
+epochs = 100
+train_loss_hist = []
+valid_loss_hist = []
+lowest_val_loss = np.inf
+epochs_without_new_lowest = 0
+
+for i in range(epochs):
+    print('Epoch: ', i)
+
+    this_epoch_train_loss = 0
+    for i1, i2 in zip(train_loader_1, train_loader_2):
+
+        # mixup the inputs ---------
+        alpha = 1
+        mixup_vals = np.random.beta(alpha, alpha, i1[0].shape[0])
+
+        lam = torch.Tensor(mixup_vals.reshape(mixup_vals.shape[0], 1, 1, 1))
+        inputs = (lam * i1[0]) + ((1 - lam) * i2[0])
+
+        lam = torch.Tensor(mixup_vals.reshape(mixup_vals.shape[0], 1))
+        labels = (lam * i1[1]) + ((1 - lam) * i2[1])
+        masks = (lam * i1[2]) + ((1 - lam) * i2[2])
+        # mixup ends ----------
+
+        inputs = inputs.to(device)
+        labels = labels.to(device)
+        masks = masks.to(device)
+
+        optimizer.zero_grad()
+        with torch.set_grad_enabled(True):
+            model = model.train()
+            outputs = model(inputs)
+            loss = criterion(outputs, labels) * masks
+            loss = loss.sum() / masks.sum()
+            loss.backward()
+            optimizer.step()
+            this_epoch_train_loss += loss.detach().cpu().numpy()
+
+    this_epoch_valid_loss = 0
+    for inputs, labels, masks in val_loader:
+        inputs = inputs.to(device)
+        labels = labels.to(device)
+        masks = masks.to(device)
+        optimizer.zero_grad()
+        with torch.set_grad_enabled(False):
+            model = model.eval()
+            outputs = model(inputs)
+            loss = criterion(outputs, labels) * masks
+            loss = loss.sum() / masks.sum()
+            this_epoch_valid_loss += loss.detach().cpu().numpy()
+
+    this_epoch_train_loss /= len(train_loader_1)
+    this_epoch_valid_loss /= len(val_loader)
+
+    train_loss_hist.append(this_epoch_train_loss)
+    valid_loss_hist.append(this_epoch_valid_loss)
+
+    if this_epoch_valid_loss < lowest_val_loss:
+        lowest_val_loss = this_epoch_valid_loss
+        torch.save(model.state_dict(), './data/model_system2')
+        epochs_without_new_lowest = 0
+    else:
+        epochs_without_new_lowest += 1
+
+    if epochs_without_new_lowest >= 25:
+        break
+
+    print(this_epoch_train_loss, this_epoch_valid_loss)
+
+    scheduler.step(this_epoch_valid_loss)
