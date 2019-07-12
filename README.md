@@ -1,6 +1,6 @@
 # DCASE 2019 - Task 5 - Urban Sound Tagging
 
-This repository contains the final solution that I used for the [DCASE 2019 - Task 5 - Urban Sound Tagging](http://dcase.community/challenge2019/task-urban-sound-tagging). 
+This repository contains the final solution that I used for the [DCASE 2019 - Task 5 - Urban Sound Tagging](http://dcase.community/challenge2019/task-urban-sound-tagging). The model achieved 1st position in prediction of both Coarse and Fine-level labels.
 
 ## Reproducing the results
 **Prerequisites**:
@@ -32,6 +32,8 @@ The weights for both the models are available in the `releases` page.
 
 ## About the solution
 _WIP_
+
+The technical report can read [here](http://dcase.community/documents/challenge2019/technical_reports/DCASE2019_Adapa_80.pdf)
 
 ## License
 Unless otherwise stated, the contents of this repository are shared under the [MIT License](LICENSE).
