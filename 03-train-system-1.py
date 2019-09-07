@@ -44,18 +44,11 @@ valid_X = (valid_X - channel_means) / channel_stds
 np.save('data/channel_means.npy', channel_means)
 np.save('data/channel_stds.npy', channel_stds)
 
-# Define the data augmentation transformations
-albumentations_transform = Compose([
-    ShiftScaleRotate(shift_limit=0.1, scale_limit=0.1, rotate_limit=0.5),
-    GridDistortion(),
-    ToTensor()
-])
-
 # Create the datasets and the dataloaders
 train_dataset = AudioDataset(torch.Tensor(train_X),
                              torch.Tensor(train_y),
                              torch.Tensor(train_y_mask),
-                             albumentations_transform)
+                             None)
 valid_dataset = AudioDataset(torch.Tensor(valid_X),
                              torch.Tensor(valid_y),
                              torch.Tensor(valid_y_mask),
@@ -75,7 +68,11 @@ model = Task5Model(31).to(device)
 print(model)
 
 # Define optimizer, scheduler and loss criteria
-optimizer = optim.Adam(model.parameters(), lr=0.001, amsgrad=True)
+from itertools import chain
+optimizer = optim.Adam(chain(
+    model.bw2col.parameters(),
+    model.mv2.classifier.parameters()
+), lr=0.001, amsgrad=True)
 scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, patience=5, verbose=True)
 criterion = nn.BCEWithLogitsLoss(reduction='none')
 
