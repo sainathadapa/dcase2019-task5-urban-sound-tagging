@@ -106,15 +106,13 @@ class Task5Model(nn.Module):
             nn.Conv2d(1, 10, 1, padding=0), nn.ReLU(),
             nn.Conv2d(10, 3, 1, padding=0), nn.ReLU())
 
-        self.mv2 = torchvision.models.mobilenet_v2(pretrained=True)
+        self.res = torchvision.models.resnext50_32x4d(pretrained=True)
 
-        self.final = nn.Sequential(
-            nn.Linear(1280, 512), nn.ReLU(), nn.BatchNorm1d(512),
-            nn.Linear(512, num_classes))
+        self.res.fc = nn.Sequential(
+            nn.Linear(2048, 256), nn.ReLU(), nn.BatchNorm1d(256),
+            nn.Linear(256, num_classes))
 
     def forward(self, x):
         x = self.bw2col(x)
-        x = self.mv2.features(x)
-        x = x.max(dim=-1)[0].max(dim=-1)[0]
-        x = self.final(x)
+        x = self.res(x)
         return x

@@ -61,9 +61,9 @@ valid_dataset = AudioDataset(torch.Tensor(valid_X),
                              torch.Tensor(valid_y_mask),
                              None)
 
-val_loader = DataLoader(valid_dataset, 64, shuffle=False)
-train_loader_1 = DataLoader(train_dataset, 64, shuffle=True)
-train_loader_2 = DataLoader(train_dataset, 64, shuffle=True)
+val_loader = DataLoader(valid_dataset, 32, shuffle=False)
+train_loader_1 = DataLoader(train_dataset, 32, shuffle=True)
+train_loader_2 = DataLoader(train_dataset, 32, shuffle=True)
 
 # Define the device to be used
 cuda = True
