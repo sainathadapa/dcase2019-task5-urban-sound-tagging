@@ -101,20 +101,13 @@ class Task5Model(nn.Module):
 
         super().__init__()
 
-        self.bw2col = nn.Sequential(
-            nn.BatchNorm2d(1),
-            nn.Conv2d(1, 10, 1, padding=0), nn.ReLU(),
-            nn.Conv2d(10, 3, 1, padding=0), nn.ReLU())
+        self.bw2col = nn.Sequential(nn.BatchNorm2d(1))
 
         self.mv2 = torchvision.models.mobilenet_v2(pretrained=True)
-
-        self.final = nn.Sequential(
-            nn.Linear(1280, 512), nn.ReLU(), nn.BatchNorm1d(512),
-            nn.Linear(512, num_classes))
+        self.mv2.classifier = nn.Sequential(nn.Linear(1280, 31))
 
     def forward(self, x):
         x = self.bw2col(x)
-        x = self.mv2.features(x)
-        x = x.max(dim=-1)[0].max(dim=-1)[0]
-        x = self.final(x)
+        x = torch.cat((x, x, x), 1)
+        x = self.mv2(x)
         return x
