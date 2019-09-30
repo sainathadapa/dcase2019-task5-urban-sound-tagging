@@ -35,3 +35,14 @@ The technical report can read [here](http://dcase.community/documents/challenge2
 
 ## License
 Unless otherwise stated, the contents of this repository are shared under the [MIT License](LICENSE).
+
+## Citing
+```
+@misc{adapa2019urban,
+    title={Urban Sound Tagging using Convolutional Neural Networks},
+    author={Sainath Adapa},
+    year={2019},
+    eprint={1909.12699},
+    archivePrefix={arXiv},
+    primaryClass={cs.SD}
+}```
