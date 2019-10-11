@@ -31,7 +31,7 @@ Clone this repository. For a single command to replicate the entire solution, ex
 The weights for both the models are available in the `releases` page.
 
 ## About the solution
-The technical report can read [here](http://dcase.community/documents/challenge2019/technical_reports/DCASE2019_Adapa_80.pdf)
+The technical report can read [here,](http://dcase.community/documents/challenge2019/technical_reports/DCASE2019_Adapa_80.pdf) and the workshop paper is available currently via [arXiv.](https://arxiv.org/abs/1909.12699)
 
 ## License
 Unless otherwise stated, the contents of this repository are shared under the [MIT License](LICENSE).
