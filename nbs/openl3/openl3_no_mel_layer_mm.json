@@ -56,15 +56,6 @@
         "input_2"
       ],
       "attr": {
-        "scale": {
-          "b": true
-        },
-        "axis": {
-          "i": "-1"
-        },
-        "epsilon": {
-          "f": 0.0010000000474974513
-        },
         "dtype": {
           "type": "DT_FLOAT32"
         },
@@ -92,6 +83,15 @@
         },
         "bias": {
           "b": true
+        },
+        "scale": {
+          "b": true
+        },
+        "axis": {
+          "i": "-1"
+        },
+        "epsilon": {
+          "f": 0.0010000000474974513
         }
       }
     },
@@ -186,6 +186,18 @@
         "conv2d_1"
       ],
       "attr": {
+        "bias": {
+          "b": true
+        },
+        "scale": {
+          "b": true
+        },
+        "axis": {
+          "i": "-1"
+        },
+        "epsilon": {
+          "f": 0.0010000000474974513
+        },
         "dtype": {
           "type": "DT_FLOAT32"
         },
@@ -210,18 +222,6 @@
               }
             ]
           }
-        },
-        "bias": {
-          "b": true
-        },
-        "scale": {
-          "b": true
-        },
-        "axis": {
-          "i": "-1"
-        },
-        "epsilon": {
-          "f": 0.0010000000474974513
         }
       }
     },
@@ -266,9 +266,6 @@
         "activation_1"
       ],
       "attr": {
-        "auto_pad": {
-          "s": "U0FNRV9MT1dFUg=="
-        },
         "dtype": {
           "type": "DT_FLOAT32"
         },
@@ -340,6 +337,9 @@
         },
         "use_bias": {
           "b": true
+        },
+        "auto_pad": {
+          "s": "U0FNRV9MT1dFUg=="
         }
       }
     },
@@ -350,15 +350,6 @@
         "conv2d_2"
       ],
       "attr": {
-        "bias": {
-          "b": true
-        },
-        "scale": {
-          "b": true
-        },
-        "axis": {
-          "i": "-1"
-        },
         "epsilon": {
           "f": 0.0010000000474974513
         },
@@ -386,6 +377,15 @@
               }
             ]
           }
+        },
+        "bias": {
+          "b": true
+        },
+        "scale": {
+          "b": true
+        },
+        "axis": {
+          "i": "-1"
         }
       }
     },
@@ -430,22 +430,6 @@
         "activation_2"
       ],
       "attr": {
-        "strides": {
-          "list": {
-            "i": [
-              "1",
-              "2",
-              "2",
-              "1"
-            ]
-          }
-        },
-        "auto_pad": {
-          "s": "VkFMSUQ="
-        },
-        "pooling_type": {
-          "s": "TUFY"
-        },
         "dtype": {
           "type": "DT_FLOAT32"
         },
@@ -494,6 +478,22 @@
               "1"
             ]
           }
+        },
+        "strides": {
+          "list": {
+            "i": [
+              "1",
+              "2",
+              "2",
+              "1"
+            ]
+          }
+        },
+        "auto_pad": {
+          "s": "VkFMSUQ="
+        },
+        "pooling_type": {
+          "s": "TUFY"
         }
       }
     },
@@ -504,6 +504,9 @@
         "max_pooling2d_1"
       ],
       "attr": {
+        "auto_pad": {
+          "s": "U0FNRV9MT1dFUg=="
+        },
         "dtype": {
           "type": "DT_FLOAT32"
         },
@@ -575,9 +578,6 @@
         },
         "use_bias": {
           "b": true
-        },
-        "auto_pad": {
-          "s": "U0FNRV9MT1dFUg=="
         }
       }
     },
@@ -668,6 +668,31 @@
         "activation_3"
       ],
       "attr": {
+        "dtype": {
+          "type": "DT_FLOAT32"
+        },
+        "_output_shapes": {
+          "list": {
+            "shape": [
+              {
+                "dim": [
+                  {
+                    "size": "-1"
+                  },
+                  {
+                    "size": "64"
+                  },
+                  {
+                    "size": "99"
+                  },
+                  {
+                    "size": "128"
+                  }
+                ]
+              }
+            ]
+          }
+        },
         "pads": {
           "list": {
             "i": [
@@ -717,31 +742,6 @@
         },
         "auto_pad": {
           "s": "U0FNRV9MT1dFUg=="
-        },
-        "dtype": {
-          "type": "DT_FLOAT32"
-        },
-        "_output_shapes": {
-          "list": {
-            "shape": [
-              {
-                "dim": [
-                  {
-                    "size": "-1"
-                  },
-                  {
-                    "size": "64"
-                  },
-                  {
-                    "size": "99"
-                  },
-                  {
-                    "size": "128"
-                  }
-                ]
-              }
-            ]
-          }
         }
       }
     },
@@ -752,6 +752,12 @@
         "conv2d_4"
       ],
       "attr": {
+        "scale": {
+          "b": true
+        },
+        "axis": {
+          "i": "-1"
+        },
         "epsilon": {
           "f": 0.0010000000474974513
         },
@@ -782,12 +788,6 @@
         },
         "bias": {
           "b": true
-        },
-        "scale": {
-          "b": true
-        },
-        "axis": {
-          "i": "-1"
         }
       }
     },
@@ -832,6 +832,34 @@
         "activation_4"
       ],
       "attr": {
+        "pooling_type": {
+          "s": "TUFY"
+        },
+        "dtype": {
+          "type": "DT_FLOAT32"
+        },
+        "_output_shapes": {
+          "list": {
+            "shape": [
+              {
+                "dim": [
+                  {
+                    "size": "-1"
+                  },
+                  {
+                    "size": "32"
+                  },
+                  {
+                    "size": "49"
+                  },
+                  {
+                    "size": "128"
+                  }
+                ]
+              }
+            ]
+          }
+        },
         "pads": {
           "list": {
             "i": [
@@ -868,34 +896,6 @@
         },
         "auto_pad": {
           "s": "VkFMSUQ="
-        },
-        "pooling_type": {
-          "s": "TUFY"
-        },
-        "dtype": {
-          "type": "DT_FLOAT32"
-        },
-        "_output_shapes": {
-          "list": {
-            "shape": [
-              {
-                "dim": [
-                  {
-                    "size": "-1"
-                  },
-                  {
-                    "size": "32"
-                  },
-                  {
-                    "size": "49"
-                  },
-                  {
-                    "size": "128"
-                  }
-                ]
-              }
-            ]
-          }
         }
       }
     },
@@ -1070,6 +1070,40 @@
         "activation_5"
       ],
       "attr": {
+        "pads": {
+          "list": {
+            "i": [
+              "0",
+              "1",
+              "1",
+              "0",
+              "0",
+              "1",
+              "1",
+              "0"
+            ]
+          }
+        },
+        "dilations": {
+          "list": {
+            "i": [
+              "1",
+              "1",
+              "1",
+              "1"
+            ]
+          }
+        },
+        "kernel_shape": {
+          "list": {
+            "i": [
+              "3",
+              "3",
+              "256",
+              "256"
+            ]
+          }
+        },
         "strides": {
           "list": {
             "i": [
@@ -1110,40 +1144,6 @@
               }
             ]
           }
-        },
-        "pads": {
-          "list": {
-            "i": [
-              "0",
-              "1",
-              "1",
-              "0",
-              "0",
-              "1",
-              "1",
-              "0"
-            ]
-          }
-        },
-        "dilations": {
-          "list": {
-            "i": [
-              "1",
-              "1",
-              "1",
-              "1"
-            ]
-          }
-        },
-        "kernel_shape": {
-          "list": {
-            "i": [
-              "3",
-              "3",
-              "256",
-              "256"
-            ]
-          }
         }
       }
     },
@@ -1154,9 +1154,6 @@
         "conv2d_6"
       ],
       "attr": {
-        "bias": {
-          "b": true
-        },
         "scale": {
           "b": true
         },
@@ -1190,6 +1187,9 @@
               }
             ]
           }
+        },
+        "bias": {
+          "b": true
         }
       }
     },
@@ -1234,6 +1234,26 @@
         "activation_6"
       ],
       "attr": {
+        "kernel_shape": {
+          "list": {
+            "i": [
+              "1",
+              "2",
+              "2",
+              "1"
+            ]
+          }
+        },
+        "strides": {
+          "list": {
+            "i": [
+              "1",
+              "2",
+              "2",
+              "1"
+            ]
+          }
+        },
         "auto_pad": {
           "s": "VkFMSUQ="
         },
@@ -1278,26 +1298,6 @@
               "0"
             ]
           }
-        },
-        "kernel_shape": {
-          "list": {
-            "i": [
-              "1",
-              "2",
-              "2",
-              "1"
-            ]
-          }
-        },
-        "strides": {
-          "list": {
-            "i": [
-              "1",
-              "2",
-              "2",
-              "1"
-            ]
-          }
         }
       }
     },
@@ -1308,32 +1308,6 @@
         "max_pooling2d_3"
       ],
       "attr": {
-        "kernel_shape": {
-          "list": {
-            "i": [
-              "3",
-              "3",
-              "256",
-              "512"
-            ]
-          }
-        },
-        "strides": {
-          "list": {
-            "i": [
-              "1",
-              "1",
-              "1",
-              "1"
-            ]
-          }
-        },
-        "use_bias": {
-          "b": true
-        },
-        "auto_pad": {
-          "s": "U0FNRV9MT1dFUg=="
-        },
         "dtype": {
           "type": "DT_FLOAT32"
         },
@@ -1382,6 +1356,32 @@
               "1"
             ]
           }
+        },
+        "kernel_shape": {
+          "list": {
+            "i": [
+              "3",
+              "3",
+              "256",
+              "512"
+            ]
+          }
+        },
+        "strides": {
+          "list": {
+            "i": [
+              "1",
+              "1",
+              "1",
+              "1"
+            ]
+          }
+        },
+        "use_bias": {
+          "b": true
+        },
+        "auto_pad": {
+          "s": "U0FNRV9MT1dFUg=="
         }
       }
     },
@@ -1392,6 +1392,15 @@
         "conv2d_7"
       ],
       "attr": {
+        "bias": {
+          "b": true
+        },
+        "scale": {
+          "b": true
+        },
+        "axis": {
+          "i": "-1"
+        },
         "epsilon": {
           "f": 0.0010000000474974513
         },
@@ -1419,15 +1428,6 @@
               }
             ]
           }
-        },
-        "bias": {
-          "b": true
-        },
-        "scale": {
-          "b": true
-        },
-        "axis": {
-          "i": "-1"
         }
       }
     },
@@ -1556,16 +1556,6 @@
         "audio_embedding_layer"
       ],
       "attr": {
-        "kernel_shape": {
-          "list": {
-            "i": [
-              "1",
-              "4",
-              "8",
-              "1"
-            ]
-          }
-        },
         "strides": {
           "list": {
             "i": [
@@ -1618,6 +1608,16 @@
               "0",
               "0",
               "0"
+            ]
+          }
+        },
+        "kernel_shape": {
+          "list": {
+            "i": [
+              "1",
+              "4",
+              "8",
+              "1"
             ]
           }
         }
