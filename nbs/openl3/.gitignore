@@ -3,6 +3,7 @@ test.pkl
 openl3_no_mel_layer_mm.npy
 openl3_no_mel_layer_pytorch_weights
 model_system1
+*.csv
 
 
 
